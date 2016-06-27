@@ -1,0 +1,114 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <title>template: home</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <!-- **** layout stylesheet **** -->
+  <link rel="stylesheet" type="text/css" href="style/style.css" />
+
+  <!-- **** colour scheme stylesheet **** -->
+  <link rel="stylesheet" type="text/css" href="style/colour.css" />
+
+</head>
+
+<body>
+  <div id="main">
+    <div id="links">
+      <!-- **** INSERT LINKS HERE **** -->
+    </div>
+    <div id="logo"><h1>ENCUENTRA TU HOTEL EN MADRID</h1></div>
+    <div class="loggin">
+
+        <form action="/login" method="POST" style="position:relative; left:2%; bottom:1%;">{% csrf_token %}
+            <label for="username">Nombre:</label>
+            <input type="text" name="username" value="" id="username" style="width:100px; height:20px;
+              border-width:1px; border-style:solid; border-color:black">
+            <label for ="password">Contraseña:</label>
+            <input type="password" name="password" value="" id="password" style="width:100px; height:20px;
+              border-width:1px; border-style:solid; border-color:black">
+            <input type="submit" value="Registrarse" style="width:100px; background-color: #000099;
+              border: 1px solid #000099;
+              border-radius: 5px;
+              box-shadow: 0px 0px 0px 1px rgba(0, 0, 100, 0.4) inset, 0px 1px 3px #333;
+              color: #FFFFFF;
+              font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+              padding: 12px 0px 14px;
+              text-align: center;
+              text-shadow: 0px -1px 1px rgba(255, 255, 255, 0.8);
+              width: 100px;"/>
+
+        </form>
+
+      </div>
+    <div id="content">
+      <div id="menu">
+        <ul>
+
+          <!-- MAIN MENU: Top horizontal menu of the site.  Use class="here" to turn the current page tab on -->
+          <div id="mainMenu">
+            <ul class="floatRight">
+              <li><a href="/" title="Pagina principal del sitio" class="here">Inicio</a></li>
+
+              <li><a href="/alojamientos" title="Todos los hoteles disponibles">Todos</a></li>
+              {% if request.user.is_authenticated %}
+              <li><a href="/miPagina" title="Pagina del usuario">Mi pagina</a></li>
+              {% endif %}
+              <li><a href="/about" title="Sobre nosotros...">About</a></li>
+            </ul>
+          </div>
+
+        </ul>
+      </div>
+      <div id="column1">
+        <div class="sidebaritem">
+          <div class="sbihead">
+            <h1>additional links</h1>
+          </div>
+          <div class="sbilinks">
+            <!-- **** INSERT ADDITIONAL LINKS HERE **** -->
+            <ul>
+              <li><a href="http://www.opendesigns.org">open designs</a></li>
+              <li><a href="http://www.w3schools.com/xhtml/default.asp">learn XHTML</a></li>
+              <li><a href="http://www.w3schools.com/css/default.asp">learn CSS</a></li>
+              <li><a href="http://www.mozilla.com/firefox">get firefox</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div id="column2">
+        <h1>Estos son nuestros hoteles con mas comentarios</h1>
+        <ul class = "indexlist">
+          {% for alojamiento,url_img in p_hoteles %}
+          <div class="10alojamientosCom">
+            <li>
+              <item>
+                <div class="p_hoteles">
+                  <a href="{{alojamiento.url}}"><h2>{{alojamiento.nombre|striptags|safe}}</h2></a>
+                  <p><strong>Donde esta:  </strong>{{alojamiento.direccion|striptags|safe}}</p>
+                </div>
+                {% ifnotequal url_img "" %}
+                  <img src="{{url_img}}" alt="" width="290" height="200"><br/>
+                {%  endifnotequal %}
+                <blockquote class="go">
+              <a href="/alojamientos/{{alojamiento.id}}"><strong> Mas informacion</strong></a>
+            </blockquote>
+          </item>
+        </li></br><hr class="separator">
+    </div>
+    {% empty %}
+      <p> No hay hoteles con comentarios </p>
+    {% endfor %}
+  </ul>
+</div>
+
+
+      </div>
+    </div>
+    <div id="footer">
+      copyright &copy; 2016 your name | <a href="#">email@emailaddress</a> | <a href="http://validator.w3.org/check?uri=referer">XHTML 1.1</a> | <a href="http://jigsaw.w3.org/css-validator/check/referer">CSS</a> | <a href="http://www.dcarter.co.uk">design by dcarter</a>
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <title>template: home</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <!-- **** layout stylesheet **** -->
+  <link rel="stylesheet" type="text/css" href="style/style.css" />
+
+  <!-- **** colour scheme stylesheet **** -->
+  <link rel="stylesheet" type="text/css" href="style/colour.css" />
+
+</head>
+
+<body>
+  <div id="main">
+    <div id="logo"><h1>ENCUENTRA TU HOTEL EN MADRID</h1></div>
+    <div class="loggin">
+      {% if request.user.is_authenticated %}
+            <form action="/logout" method="post" style="position:relative; left:2%; bottom:1%;">{% csrf_token %}
+              <h2><label for="username">{{request.user.username}}</label></h2><br/>
+              <input type="submit" value="Salir" style="width:100px; background-color: #000099;
+                border: 1px solid #CC9900;
+                border-radius: 5px;
+                box-shadow: 0px 0px 0px 1px rgba(255, 115, 100, 0.4) inset, 0px 1px 3px #333;
+                color: #FFFFFF;
+                font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+                padding: 12px 0px 14px;
+                text-align: center;
+                text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+                width: 50px;"/>
+            </form>
+      {% else %}
+        <form action="/login" method="POST" style="position:relative; left:2%; bottom:1%;">{% csrf_token %}
+            <label for="username">Nombre:</label>
+            <input type="text" name="username" value="" id="username" style="width:100px; height:20px;
+              border-width:1px; border-style:solid; border-color:black">
+            <label for ="password">Contraseña:</label>
+            <input type="password" name="password" value="" id="password" style="width:100px; height:20px;
+              border-width:1px; border-style:solid; border-color:black">
+            <input type="submit" value="Iniciar" style="width:100px; background-color: #000099;
+              border: 1px solid #000099;
+              border-radius: 5px;
+              box-shadow: 0px 0px 0px 1px rgba(0, 0, 100, 0.4) inset, 0px 1px 3px #333;
+              color: #FFFFFF;
+              font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+              padding: 12px 0px 14px;
+              text-align: center;
+              text-shadow: 0px -1px 1px rgba(255, 255, 255, 0.8);
+              width: 100px;"/>
+
+        </form>
+      {% endif %}
+      </div>
+    <div id="content">
+      <div id="menu">
+        <ul>
+
+          <!-- MAIN MENU: Top horizontal menu of the site.  Use class="here" to turn the current page tab on -->
+          <div id="mainMenu">
+            <ul class="floatRight">
+              <li><a href="/" title="Pagina principal del sitio" class="here">Inicio</a></li>
+              <li><a href="/alojamientos" title="Todos los hoteles disponibles">Todos</a></li>
+              {% if request.user.is_authenticated %}
+              <li><a href="/pag4.html" title="Pagina del usuario">Mi pagina</a></li>
+              {% endif %}
+              <li><a href="/about" title="Sobre nosotros...">About</a></li>
+            </ul>
+          </div>
+
+        </ul>
+      </div>
+      <div id="column2">
+        <h1>About</h1></br>
+            <ul>
+              <ul class = "indexlist">
+              {% for elem in elementosXML %}
+
+              <p><strong>{{elem}}</strong></p></br>
+
+              {% endfor %}
+              <a href="/{{usuario}}"><h2><strong> Volver a la pagina del usuario </strong></h2></a>
+          </ul>
+          </ul>
+        </li></br><hr class="separator">
+    </div>
+  </ul>
+</div>
+      </div>
+    </div>
+    <div id="footer">
+      "Esta aplicacion utiliza datos del portal de datos abiertos de la ciudad de Madrid"
+
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+
+<head>
+  <title>template: page 3</title>
+  <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+
+  <!-- **** layout stylesheet **** -->
+  <link rel="stylesheet" type="text/css" href="style/style.css" />
+
+  <!-- **** colour scheme stylesheet **** -->
+  <link rel="stylesheet" type="text/css" href="style/colour.css" />
+
+</head>
+
+<body>
+  <div id="main">
+    <div id="logo"><h1>ENCUENTRA TU HOTEL EN MADRID</h1></div>
+    <div class="loggin">
+      {% if request.user.is_authenticated %}
+            <form action="/logout" method="post" style="position:relative; left:2%; bottom:1%;">{% csrf_token %}
+              <h2><label for="username">{{request.user.username}}</label></h2><br/>
+              <input type="submit" value="Salir" style="width:100px; background-color: #000099;
+                border: 1px solid #CC9900;
+                border-radius: 5px;
+                box-shadow: 0px 0px 0px 1px rgba(255, 115, 100, 0.4) inset, 0px 1px 3px #333;
+                color: #FFFFFF
+                font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+                padding: 12px 0px 14px;
+                text-align: center;
+                text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+                width: 50px;"/>
+            </form>
+      {% else %}
+        <form action="/login" method="POST" style="position:relative; left:2%; bottom:1%;">{% csrf_token %}
+            <label for="username">Nombre:</label>
+            <input type="text" name="username" value="" id="username" style="width:100px; height:20px;
+              border-width:1px; border-style:solid; border-color:black">
+            <label for ="password">Contraseña:</label>
+            <input type="password" name="password" value="" id="password" style="width:100px; height:20px;
+              border-width:1px; border-style:solid; border-color:black">
+            <input type="submit" value="Iniciar" style="width:100px; background-color: #000099;
+              border: 1px solid #000099;
+              border-radius: 5px;
+              box-shadow: 0px 0px 0px 1px rgba(0, 0, 100, 0.4) inset, 0px 1px 3px #333;
+              color: #FFFFFF;
+              font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+              padding: 12px 0px 14px;
+              text-align: center;
+              text-shadow: 0px -1px 1px rgba(255, 255, 255, 0.8);
+              width: 100px;"/>
+
+        </form>
+      {% endif %}
+      </div>
+    <div id="content">
+      <div id="menu">
+        <ul>
+
+          <!-- MAIN MENU: Top horizontal menu of the site.  Use class="here" to turn the current page tab on -->
+          <div id="mainMenu">
+            <ul class="floatRight">
+              <li><a href="/" title="Pagina principal del sitio" class="here">Inicio</a></li>
+              <li><a href="/alojamientos" title="Todos los hoteles disponibles">Todos</a></li>
+              {% if request.user.is_authenticated %}
+              <li><a href="/pag4.html" title="Pagina del usuario">Mi pagina</a></li>
+              {% endif %}
+              <li><a href="/page2.html" title="Sobre nosotros...">About</a></li>
+            </ul>
+          </div>
+
+        </ul>
+      </div>
+      <div id="column2">
+        <h1>{{alojamiento.nombre|striptags|safe}}</h1>
+<h2><strong>¡Has marcado este alojamiento como favorito!</strong></h2>
+<ul class = "indexlist">
+    <div class="10alojamientosCom">
+        <item>
+          <div class="alojamiento" style="width:750px;">
+            <h2><strong>Dirección:  </strong>{{alojamiento.direccion|striptags|safe}}</h2>
+
+            <p>{{alojamiento.descripcion|striptags|safe}}</p></br>
+          </div>
+          {% ifnotequal imagenes "" %}
+            {% for imagen in imagenes %}
+              <img src="{{imagen.url}}" alt="" class="imagresize" style="width:75%;">
+            {% endfor %}
+          {%  endifnotequal %}
+          <p> </p>
+          <div class="comentarios" style="width:750px;">
+          {% ifnotequal comentarios "" %}
+            <h2><strong>Comentarios de otros usuarios para este alojamiento:</strong></h2>
+            <ul>
+            {% for comentario in comentarios %}
+              <li><p>{{comentario.cuerpo|striptags|safe}}<br/></p></li>
+            {% endfor %}
+            {% if request.user.is_authenticated %}
+            </br>
+            <form action="/escribirComentario/{{alojamiento.id}}" method="POST" style="position:left; left:2% ">{% csrf_token %}
+                <label for="comentario"><h3><strong>Comentario:</strong></h3></label>
+                <textarea name="comentario"  ></textarea>
+                <input type="submit" value="Enviar" style="width: 50px; background-color: #000099;
+                  border: 1px solid #CC9900;
+                  border-radius: 5px;
+                  box-shadow: 0px 0px 0px 1px rgba(255, 115, 100, 0.4) inset, 0px 1px 3px #333;
+                  color: #FFFFFF;
+                  font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+                  padding: 12px 0px 14px;
+                  text-align: center;
+                  text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+                  width:  150px;"/>
+            </form>
+          </div>
+            </br>
+            <form action="/cambiarIdioma/{{alojamiento.id}}" method="POST">{% csrf_token %}
+            <label for="idioma"><h2>Cambia el idioma</h2></label>
+              <select id="idioma" name="idioma">
+                <option value="espaniol">español</option>
+                <option value="ingles">ingles</option>
+                <option value="frances">frances</option>
+              </select>
+              <input type="submit" value="Enviar" style="width: 50px; background-color: #006666;
+                border: 1px solid #003333;
+                border-radius: 5px;
+                box-shadow: 0px 0px 0px 1px rgba(255, 115, 100, 0.4) inset, 0px 1px 3px #333;
+                color: #000;
+                font: bold 20px/1 "helvetica neue",helvetica,arial,sans-serif;
+                padding: 12px 0px 14px;
+                text-align: center;
+                text-shadow: 0px -1px 1px rgba(0, 0, 0, 0.8);
+                width: 150px;"/>
+            </form>
+              {% endif %}
+            </ul>
+          {%  endifnotequal %}
+          <blockquote class="go">
+            <a href="{{alojamiento.url}}"><strong>Visita la web de este alojamiento</strong></a>
+          </blockquote>
+        </item>
+      </br><hr class="separator">
+  </div>
+</ul>
+
+      </div>
+    </div>
+    <div id="footer">
+            "Esta aplicacion utiliza datos del portal de datos abiertos de la ciudad de Madrid"
+    </div>
+  </div>
+</body>
+</html>
